@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>leo's Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #000;
+      color: #22c55e;
+      font-family: 'Courier New', monospace;
+    }
+
+    .terminal-text {
+      color: #22c55e;
+    }
+
+    .terminal-output {
+      color: #86efac;
+    }
+
+    .cursor-blink {
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      50% {
+        opacity: 1;
+      }
+
+      51%,
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .typing-line {
+      min-height: 1.5em;
+      overflow: hidden;
+    }
+  </style>
+
+  <script>
+    class TerminalAnimator {
+      constructor() {
+        this.lines = [
+          { type: 'command', text: '$ whoami' },
+          { type: 'output', text: 'I am IT Support & Network Engineer' },
+          { type: 'command', text: '$ ls -la portfolio/' },
+          { type: 'output', text: 'drwxr-xr-x IT Support & Troubleshooting/' },        
+          { type: 'output', text: 'drwxr-xr-x Web Application Deployment on AWS/' },
+          { type: 'output', text: 'drwxr-xr-x Network Security Implementation & Configuration/' },
+          { type: 'command', text: '$ cat skill.txt' },
+          { type: 'output', text: 'IT Systems & Network Training' },
+          { type: 'command', text: '$ echo "LEO.PORTFOLIO"' },
+          { type: 'output', text: 'Pursuing CCNP 350-701 Security' },
+        ];
+        this.currentLineIndex = 0;
+        this.isAnimating = false;
+      }
+
+      async typeText(element, text, speed = 50) {
+        element.textContent = '';
+        for (let i = 0; i < text.length; i++) {
+          element.textContent += text[i];
+          await new Promise(resolve => setTimeout(resolve, speed));
+        }
+      }
+
+      async animateTerminal(container) {
+        this.isAnimating = true;
+        container.innerHTML = '';
+
+        while (true) {
+          for (let i = 0; i < this.lines.length; i++) {
+            const line = this.lines[i];
+            const lineEl = document.createElement('div');
+            lineEl.className = `mb-2 typing-line ${line.type === 'command' ? 'text-green-500' : 'text-green-400'}`;
+            container.appendChild(lineEl);
+
+            await this.typeText(lineEl, line.text, 30);
+            await new Promise(resolve => setTimeout(resolve, 200));
+          }
+
+          // Add cursor at end
+          const cursorEl = document.createElement('div');
+          cursorEl.className = 'text-green-500';
+          cursorEl.innerHTML = '<span class="cursor-blink">_</span>';
+          container.appendChild(cursorEl);
+
+          // Wait before repeating
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          container.innerHTML = '';
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const terminalContent = document.getElementById('terminal-content');
+      const animator = new TerminalAnimator();
+      animator.animateTerminal(terminalContent);
+    });
+  </script>
+</head>
+
+<body>
+  <div class="min-h-screen bg-black text-green-500 font-mono p-8">
+    <!-- Header Navigation -->
+    <header class="flex items-center justify-between mb-16">
+      <div class="flex items-center gap-2">
+        <span class="text-green-500 text-xl">>_</span>
+        <span class="text-green-500">root@leo's portfolio</span>
+      </div>
+      <nav class="flex gap-4 flex-wrap">
+        <button class="bg-green-500 text-black px-4 py-1 hover:bg-green-400 transition-colors">
+          /home
+        </button>
+        <button class="text-green-500 hover:text-green-300 transition-colors" onclick="window.location.href='contact.html'">
+          ./contact
+        </button>
+        <button class="text-green-500 hover:text-green-300 transition-colors" onclick="window.location.href='project.html'">
+          ./projects
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Terminal Window -->
+    <div class="max-w-5xl mx-auto mb-16">
+      <div class="border-2 border-green-500 rounded-lg overflow-hidden">
+        <!-- Terminal Header -->
+        <div class="bg-black border-b-2 border-green-500 px-4 py-3 flex items-center gap-2">
+          <div class="flex gap-2">
+            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+          </div>
+          <span class="ml-4 text-green-500">Welcome Back Commender</span>
+        </div>
+
+        <!-- Terminal Content -->
+        <div class="p-8 min-h-[400px] bg-black" id="terminal-content">
+        </div>
+      </div>
+    </div>
+
+    <!-- Portfolio Sections -->
+    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+      <!-- Design -->
+      <div
+        class="border-2 border-green-500 rounded-lg p-8 hover:bg-green-500 hover:bg-opacity-5 transition-all cursor-pointer">
+        <div class="text-center space-y-4">
+          <div class="text-green-500 text-4xl">&lt;&gt;</div>
+          <div class="text-green-500">Programming</div>
+          <div class="text-green-400 text-sm">Basic Web Development, Python Basic, Laravel</div>
+        </div>
+      </div>
+
+      <!-- Video -->
+      <div
+        class="border-2 border-green-500 rounded-lg p-8 hover:bg-green-500 hover:bg-opacity-5 transition-all cursor-pointer">
+        <div class="text-center space-y-4">
+          <div class="text-green-500 text-4xl">🌐</div>
+          <div class="text-green-500">Networking</div>
+          <div class="text-green-400 text-sm">CCNA 200-301 Certified, CWNA 008-115</div>
+        </div>
+      </div>
+
+      <div
+        class="border-2 border-green-500 rounded-lg p-8 hover:bg-green-500 hover:bg-opacity-5 transition-all cursor-pointer">
+        <div class="text-center space-y-4">
+          <div class="text-green-500 text-4xl">🛠️</div>
+          <div class="text-green-500">IT Support</div>
+          <div class="text-green-400 text-sm">Google IT Support (Coursera) </div>
+          <div class="text-green-400 text-sm">Google Workspace Administration (Udemy) </div>
+        </div>
+      </div>
+
+      <div
+        class="border-2 border-green-500 rounded-lg p-8 hover:bg-green-500 hover:bg-opacity-5 transition-all cursor-pointer">
+        <div class="text-center space-y-4">
+          <div class="text-green-500 text-4xl">🐧</div>
+          <div class="text-green-500">Linux</div>
+          <div class="text-green-400 text-sm"> Introduction to Linux (EDX) </div>
+          <div class="text-green-400 text-sm">Ubuntu Server Administration </div>
+        </div>
+      </div>
+
+      <div
+        class="border-2 border-green-500 rounded-lg p-8 hover:bg-green-500 hover:bg-opacity-5 transition-all cursor-pointer">
+        <div class="text-center space-y-4">
+          <div class="text-green-500 text-4xl">🔒</div>
+          <div class="text-green-500">Security</div>
+          <div class="text-green-400 text-sm"> Fortinet Certified Associate in Cybersecurity (Fortinet) </div>
+          <div class="text-green-400 text-sm"> Ethical Hacker (Cisco) </div>
+          <div class="text-green-400 text-sm"> Introducing Security: Aligning Asset and Risk
+            Management
+          </div>
+          <div class="text-green-400 text-sm">Information Security Associate (SkillFront) </div>
+        </div>
+      </div>
+      <!-- Photography -->
+      <div
+        class="border-2 border-green-500 rounded-lg p-8 hover:bg-green-500 hover:bg-opacity-5 transition-all cursor-pointer">
+        <div class="text-center space-y-4">
+          <div class="text-green-500 text-4xl">☁️</div>
+          <div class="text-green-500">Clouds</div>
+          <div class="text-green-400 text-sm">Oracle Cloud Infrastructure</div>
+          <div class="text-green-400 text-sm">Oracle Cloud Data Management</div>
+          <div class="text-green-400 text-sm">AWS Cloud Practitioner Essentials (Coursera) </div>
+          <div class="text-green-400 text-sm">AWS Cloud Technical Essentials (EDX) </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Down Indicator -->
+    <div class="text-center">
+      <button class="text-green-500 hover:text-green-300 transition-colors animate-bounce"
+        onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})">
+        <!-- <div>scroll_down()</div> -->
+        <!-- <div class="text-2xl mt-2">▼</div> -->
+      </button>
+    </div>
+  </div>
+</body>
+
+</html>
